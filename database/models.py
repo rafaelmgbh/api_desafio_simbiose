@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
@@ -24,4 +24,6 @@ class Papers(Base):
     category = Column(String)
     title = Column(String)
     summary = Column(String)
+    body = Column(String)
+    firstParagraph = Column(String)
     author_id = Column(Integer, ForeignKey('author.id'))
