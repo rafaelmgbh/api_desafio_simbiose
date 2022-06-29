@@ -3,8 +3,19 @@ from pydantic.class_validators import Optional
 
 
 class UserCreateInput(BaseModel):
-    name: str
+    email: Optional[str]
+    password: Optional[str]
 
+class UserOut(BaseModel):
+    id : Optional[int]
+    name: Optional[str]
+    user_type: Optional[str]
+    email:  Optional[int]
+
+class UserCreate(UserOut):
+    id: Optional[int]
+    name: Optional[str]
+    email: Optional[int]
 
 class StandardOutput(BaseModel):
     message: str
@@ -16,7 +27,7 @@ class ErrorOutput(BaseModel):
 
 class UserListOutput(BaseModel):
     id: int
-    name: str
+    email: str
 
     class Config:
         orm_mode = True
