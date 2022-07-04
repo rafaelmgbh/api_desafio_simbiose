@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 
 Base = declarative_base()
 
@@ -18,6 +18,7 @@ class Author(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String)
     picture = Column(String)
+    paper = relationship('Papers', back_populates='authors')
 
 
 class Papers(Base):
@@ -29,3 +30,4 @@ class Papers(Base):
     body = Column(String)
     firstParagraph = Column(String)
     author_id = Column(Integer, ForeignKey('author.id'))
+    authors = relationship('Author', back_populates='paper')
