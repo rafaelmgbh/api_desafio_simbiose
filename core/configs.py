@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     DBBAseModel = declarative_base()
 
     JWT_SECRET: str = 'Ud7oha7t8DiDQRwKc0bNT8gOeQtcecSoa0uf2jDjKLE'
+    JWT_REFRESH_SECRET_KEY: str = 'teste do teste'
     """
     import secrets 
     token : str = secrets.token_urlsafe(32)

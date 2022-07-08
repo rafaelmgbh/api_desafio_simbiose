@@ -9,10 +9,10 @@ app = FastAPI()
 app.title = "The Libray API"
 router = APIRouter()
 
-# docker compose up
+# docker compose up-
 # source venv/bin/activate && set -a; source .env; set +a
 
-app.include_router(prefix='/first', router=router)
+
 app.include_router(user_router)
 app.include_router(author_router)
 app.include_router(papers_router)
