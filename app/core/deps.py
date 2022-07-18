@@ -1,23 +1,17 @@
-from typing import Generator, Optional
-from fastapi import Depends, HTTPException, status
-from jose import jwt, JWTError
+from typing import Generator, Optional ,Union , Any
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 from pydantic import BaseModel
 from database.connection import Session
-from typing import Union, Any
 from datetime import datetime
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from core.configs import settings
-
 from jose import jwt
 from pydantic import ValidationError
-from schemas import TokenSchema, UserCreate, SystemUser, TokenPayload
+from schemas import SystemUser, TokenPayload
 from replit import db
 from passlib.context import CryptContext
 from core.configs import settings
-from database.models import User
+
 
 
 class TokenData(BaseModel):
@@ -48,7 +42,7 @@ def verify_password(password: str, hashed_pass: str) -> bool:
 
 
 reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/login",
+    tokenUrl="/user/login",
     scheme_name="JWT"
 )
 

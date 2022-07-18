@@ -1,5 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, APIRouter
+from starlette.responses import RedirectResponse
+
 from views import user_router,author_router, papers_router
 
 # to get a string like this run:
@@ -17,6 +19,11 @@ app.include_router(user_router)
 app.include_router(author_router)
 app.include_router(papers_router)
 
+api_get = APIRouter()
+
+@app.get('/', response_class=RedirectResponse, include_in_schema=False)
+async def docs():
+    return RedirectResponse(url='/docs/')
 
 
 if __name__ == "__main__":

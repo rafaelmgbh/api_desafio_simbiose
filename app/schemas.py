@@ -86,6 +86,7 @@ class TokenPayload(BaseModel):
 class SystemUser (BaseModel):
     password: str
 
+
 # Optional , e pq o pydentc solta uma exceção quando recebe null no campo
 class AuthorlistOutput(BaseModel):
     id: int

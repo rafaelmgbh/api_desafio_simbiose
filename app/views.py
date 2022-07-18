@@ -1,4 +1,9 @@
-from schemas import  TokenSchema
+import limiter as limiter
+from starlette.responses import RedirectResponse
+import aioredis
+from fastapi_limiter import FastAPILimiter
+from fastapi_limiter.depends import RateLimiter
+from schemas import TokenSchema, SystemUser
 from auth.auth import (
     get_hashed_password,
     create_access_token,
@@ -21,7 +26,6 @@ user_router = APIRouter(prefix='/user')
 author_router = APIRouter(prefix='/authors')
 papers_router = APIRouter(prefix='/papers')
 auth_router = APIRouter(prefix='/auth')
-
 
 @user_router.post('/signup', summary="Create new user", response_model=UserListOutput)
 async def create_user(data: UserCreateInput, db: AsyncSession = Depends(get_session)):
@@ -50,8 +54,9 @@ async def create_user(data: UserCreateInput, db: AsyncSession = Depends(get_sess
     return
 
 
-@user_router.get('/', response_model=List[UserOut])
-async def get_user(db: AsyncSession = Depends(get_session)):
+@user_router.get('/',response_model=List[UserOut])
+
+async def get_user(db: AsyncSession = Depends(get_session,)):
     async with db as session:
         query = select(User)
         result = await session.execute(query)
@@ -94,8 +99,7 @@ async def up_author(author_id: int, author_input: AuthorUpdateInput, db: AsyncSe
             raise HTTPException(detail='Author not found', status_code=status.HTTP_404_NOT_FOUND)
 
 @author_router.get('/', response_model=List[AuthorlistOutput])
-async def get_me(user: User = Depends(get_current_user)):
-    return user
+
 async def author_list():
     try:
         return await AuthorService.list_author()
@@ -176,3 +180,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
     return TokenSchema
 
 
+@user_router.get('/me', summary='Get details of currently logged in user', response_model=UserOut)
+async def get_me(user: SystemUser = Depends(get_current_user)):
+    return user
